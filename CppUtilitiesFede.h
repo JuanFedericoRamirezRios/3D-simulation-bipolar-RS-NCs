@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <filesystem>
 
 using namespace std;
 
@@ -92,6 +93,20 @@ public:
         else version = "Previous to C++98 or custom: " + to_string(standard) + " standard";
         return version;
     };
+    static bool ExistPath(string path) {
+        filesystem::path fileOrDirectory(path);
+        if(filesystem::exists(fileOrDirectory)) return true;
+        else return false;
+    };
+    static bool CreateDirIfNoExist(string pathFolder) // The path must be ended with '/'.
+    {
+        filesystem::path directory(pathFolder);
+        if(!filesystem::exists(directory)) {
+            filesystem::create_directory(directory.parent_path());
+            return true;
+        } else return false;
+
+    }
 };
 class RANDOM_FEDE {
 private:
