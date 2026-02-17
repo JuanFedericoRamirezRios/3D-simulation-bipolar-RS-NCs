@@ -356,7 +356,7 @@ class MAIN_FRAME(tk.Tk):
         s.simulateButton = tk.Button(master = vFrame2, text = "SIMULATE", command = s.Simulate)
         s.simulateButton.pack(expand = True)
 
-        s.drawButton = tk.Button(master = vFrame2, text = "SIMULATE + SAVE Vos", command = s.DrawSimulate)
+        s.drawButton = tk.Button(master = vFrame2, text = "SIMULATE + SAVE Vos", command = s.SimulateDraw)
         s.drawButton.pack(expand = True)
         
     def ChangeSeed(s, *args):
@@ -382,7 +382,8 @@ class MAIN_FRAME(tk.Tk):
         s.InitSimulator(s.textOutput.get().encode(), drawSim)
         s.SetContProc(0)
         s.Forming(0.0, s.Vforming[0], 0.1)
-
+        s.SetContProc(1)
+        s.ResetProcess(0.0, s.Vreset[0], -0.1)
 
         s.FreeSimulatorMemory()
 
@@ -391,8 +392,6 @@ class MAIN_FRAME(tk.Tk):
 
         s.simulateButton.config(state = "active")
         s.drawButton.config(state = "active")
-    
-
 
     def WriteValsOutFile(s):
         if os.path.exists(s.textOutput.get()):            
@@ -438,7 +437,7 @@ class MAIN_FRAME(tk.Tk):
         s.outFile.write("\n")
         s.outFile.close()
 
-    def DrawSimulate(s):
+    def SimulateDraw(s):
         s.Simulate(drawSim=True)
     
     def DrawData(s):
