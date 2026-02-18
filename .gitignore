@@ -9,5 +9,3 @@ outFile*
 build
 dist
 *.spec
-# ignore every folders:
-*
