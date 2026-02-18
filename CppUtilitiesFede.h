@@ -10,8 +10,18 @@ using namespace std;
 
 class UTILS_FEDE {
 private:
+    
 
 public:
+    
+    static int PrintValStatic(int backCounts, string text) {
+        for(; backCounts > 0; backCounts--) {
+            cout << "\b \b"; // Erase a char
+        }
+        cout << text;
+        return text.length();
+    };
+
     static bool LoadParams(string* params, string filePath, int numParams) {
         /*
         The format is "...:(space)value(line break)"

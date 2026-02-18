@@ -381,12 +381,13 @@ class MAIN_FRAME(tk.Tk):
 
         s.InitSimulator(s.textOutput.get().encode(), drawSim)
         s.SetContProc(0)
+        # s.Forming(0.0, 1.0, 0.1)
         s.Forming(0.0, s.Vforming[0], 0.1)
         s.SetContProc(1)
         s.ResetProcess(0.0, s.Vreset[0], -0.1)
-
         s.FreeSimulatorMemory()
 
+        print()
         s.DrawData()
         print()
 
@@ -441,7 +442,40 @@ class MAIN_FRAME(tk.Tk):
         s.Simulate(drawSim=True)
     
     def DrawData(s):
-        return
+        dfExp = pd.read_csv(s.textExp.get(), sep = "\t", usecols= ["V (V)", "I (A)"])
+        # print("Data number = " + str(len(dfExp)))
+
+        dfSim = s.ObtainDfSim()
+
+        ppt.figure("I Vs V").clear()
+        ppt.figure("I Vs V")
+        ppt.grid(True)
+        ppt.xlabel("Voltage (V)")
+        ppt.ylabel("Current (A)")
+        ppt.ylim(bottom=s.minIview)
+        print("Drawing the experimental data")
+        ppt.semilogy(dfExp["V (V)"], dfExp["I (A)"], "-") # "-": points joined by lines.
+        print("Drawing the calculated data")
+        ppt.semilogy(dfSim["V (V)"], dfSim["I (A)"], "-") # "-": points joined by lines.
+        # ppt.savefig("grafica_I-V.png")
+        ppt.pause(0.1) # Show the window graph in parallel.
+
+        ppt.figure("Ns Vs V").clear()
+        ppt.figure("Ns Vs V")
+        ppt.grid(True)
+        ppt.xlabel("Voltage (V)")
+        ppt.ylabel("Ns (a.u.)")
+        ppt.plot(dfSim["V (V)"], dfSim["Ns (a.u.)"], "-") # "-": points joined by lines.
+        # ppt.savefig("grafica_Ns-V.png")
+        ppt.pause(0.1) # Show the window graph in parallel.
+
+    def ObtainDfSim(s):
+        lineHead, _, __ = pu.FindInPlainText(s.textOutput.get(), "V (V)\t")
+        if lineHead == None:
+            print("Error: Not find Headers line in the outputFile")
+            return
+        return pd.read_csv(s.textOutput.get(), sep = "\t", usecols= ["V (V)", "Ns (a.u.)", "I (A)"], skiprows=lineHead) # If the data start after of headers, It is could use parameter header=.
+        # print("Data number = " + str(len(dfSim)))
     
     
     
