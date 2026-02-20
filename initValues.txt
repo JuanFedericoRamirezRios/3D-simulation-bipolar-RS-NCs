@@ -4,33 +4,33 @@ The format of data must be    (Description) (colon or two periods)(space)(data o
 Example                    Experimental data(colon or two periods) Zs11_expe_01_cycle.dat(endLine)
 
 
-Experimental data: Zs11_expe_01_cycle.dat
-Structure layers: Zs11_3D_structure.txt
-Output file of results: outFileZs11_00_RESET.dat
+Experimental data: Experimental_data.dat
+Structure layers: 3D_1NC_structure.txt
+Output file of results: outFile.dat
 Seed of random number generator: 3
 
 N_LRS: 6.0
 N_HRS: -20.0
 Nfresh: -56.0
-Vforming (V): 20.0
-Vreset (V): -20.0
-Vset (V): 20.0
+Vforming (V): 2
+Vreset (V): -2
+Vset (V): 2
 Khrs (a.u.): 8e-16
 Klrs (a.u. cm3): 7e-27
 
 gammaSET for generation probb.: 3.0
 gammaRESET for generation probb.: 0.4
 phiDrift oxygen migrat: 8.0
-I compliance FORMING (A): 0.01
-I compliance RESET (A): 0.01
-I compliance SET (A): 0.01
+I compliance FORMING (A): 1e-5
+I compliance RESET (A): 1e-5
+I compliance SET (A): 1e-5
 a const. lattice (cm): 0.325e-7
 A Area device (cm2): 0.01
 
 Vo_ini Num initial Vos: 0
 t_0 gener-recomb (s): 5e-06
 E_Oe oxygen equilib. in ox. matrix (eV): 1.0
-E_Oe oxygen equilib. in NCs/Ox.: 4.5
+E_Oe oxygen equilib. in NCs/Ox.: 1.0
 E_Om oxygen migrat. (eV): 1.0
 L_O decaying oxig. ion (a): 5.4
 beta0 recomb. factor: 6e6

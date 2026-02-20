@@ -70,9 +70,9 @@ class MAIN_FRAME(tk.Tk):
         s.FreeSimulatorMemory = handle.FreeSimulatorMemory
 
     def SetDefectVals(s):
-        s.textExp = tk.StringVar(); s.textExp.set("Zs11_expe_01_cycle.dat")
-        s.textStructure = tk.StringVar(); s.textStructure.set("Zs11_3D_structure.txt")
-        s.textOutput = tk.StringVar(); s.textOutput.set("outFileZs11_00_RESET.dat")
+        s.textExp = tk.StringVar(); s.textExp.set("Experimental_data.dat")
+        s.textStructure = tk.StringVar(); s.textStructure.set("3D_1NC_structure.txt")
+        s.textOutput = tk.StringVar(); s.textOutput.set("outFile.dat")
         s.seed = [3]
 
         s.N_LRS = [6.0]    # u.a. # self: N_LRS is a list of the class MAIN_FRAME
@@ -229,7 +229,7 @@ class MAIN_FRAME(tk.Tk):
         VresetControls = NC.CONTROLS_VALUE(master = s, name = "Vreset", units = "V", value = s.Vreset)
         VresetControls.grid(column = 4, row = 0, sticky = "nsew")
 
-        VsetControls = NC.CONTROLS_VALUE(master = s, name = "Vreset", units = "V", value = s.Vset)
+        VsetControls = NC.CONTROLS_VALUE(master = s, name = "Vset", units = "V", value = s.Vset)
         VsetControls.grid(column = 5, row = 0, sticky = "nsew")
 
         KhrsControls = NC.CONTROLS_SCIENTIFIC(master = s, name = "K_HRS", units = "au", value = s.Khrs)
@@ -380,11 +380,17 @@ class MAIN_FRAME(tk.Tk):
         s.WriteValsOutFile()
 
         s.InitSimulator(s.textOutput.get().encode(), drawSim)
-        s.SetContProc(0)
-        # s.Forming(0.0, 1.0, 0.1)
+        s.SetContProc(0) 
         s.Forming(0.0, s.Vforming[0], 0.1)
-        s.SetContProc(1)
+        s.SweepProcess(s.Vforming[0], 0.0, -0.1)
         s.ResetProcess(0.0, s.Vreset[0], -0.1)
+        s.SweepProcess(s.Vreset[0], 0.0, 0.1)
+        for n in range(1, int(s.cycles[0])+1):
+            s.SetContProc(n)  
+            s.SetProcess(0.0, s.Vset[0], 0.1)
+            s.SweepProcess(s.Vset[0], 0.0, -0.1)
+            s.ResetProcess(0.0, s.Vreset[0], -0.1)
+            s.SweepProcess(s.Vreset[0], 0.0, 0.1)
         s.FreeSimulatorMemory()
 
         print()
@@ -442,8 +448,10 @@ class MAIN_FRAME(tk.Tk):
         s.Simulate(drawSim=True)
     
     def DrawData(s):
-        dfExp = pd.read_csv(s.textExp.get(), sep = "\t", usecols= ["V (V)", "I (A)"])
-        # print("Data number = " + str(len(dfExp)))
+        if os.path.exists(s.textExp.get()): 
+            dfExp = pd.read_csv(s.textExp.get(), sep = "\t", usecols= ["V (V)", "I (A)"])
+            # print("Experimental data number = " + str(len(dfExp)))
+        else: print("No find the experimental data:", s.textExp.get())
 
         dfSim = s.ObtainDfSim()
 
@@ -453,8 +461,9 @@ class MAIN_FRAME(tk.Tk):
         ppt.xlabel("Voltage (V)")
         ppt.ylabel("Current (A)")
         ppt.ylim(bottom=s.minIview)
-        print("Drawing the experimental data")
-        ppt.semilogy(dfExp["V (V)"], dfExp["I (A)"], "-") # "-": points joined by lines.
+        if os.path.exists(s.textExp.get()): 
+            print("Drawing the experimental data")
+            ppt.semilogy(dfExp["V (V)"], dfExp["I (A)"], "-") # "-": points joined by lines.
         print("Drawing the calculated data")
         ppt.semilogy(dfSim["V (V)"], dfSim["I (A)"], "-") # "-": points joined by lines.
         # ppt.savefig("grafica_I-V.png")
