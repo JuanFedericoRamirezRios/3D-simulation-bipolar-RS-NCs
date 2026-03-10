@@ -9,22 +9,21 @@
 
  * GPL-3.0 license
 """
+valuesInitPath = "initValues.txt"
+minIview = 1e-18 # Amp
 
 import tkinter as tk
 import pandas as pd
 import NumericControlsFede as NC
 import os
-import glob
 import matplotlib.pyplot as ppt
 import PythonUtilitiesFede as pu
-import matplotlib.colors
-import numpy as np
 import ctypes
 
 class MAIN_FRAME(tk.Tk):
     def __init__(s):
         super().__init__()
-        s.title("2D_Simulation_RRAM_BIPOLAR") 
+        s.title("3D_Simulation_RRAM_BIPOLAR") 
         s.geometry(f"{1500}x{580}")
         s.protocol("WM_DELETE_WINDOW", s.CloseProgram)
 
@@ -32,11 +31,7 @@ class MAIN_FRAME(tk.Tk):
 
         print("")
 
-        s.minIview = 1e-18 # Amp
-
-        valuesInitPath = "initValues.txt"
-
-        s.SetDefectVals()
+        s.SetDefaultVals()
 
         s.ReadInitValues(valuesInitPath, 34)
 
@@ -69,7 +64,7 @@ class MAIN_FRAME(tk.Tk):
 
         s.FreeSimulatorMemory = handle.FreeSimulatorMemory
 
-    def SetDefectVals(s):
+    def SetDefaultVals(s):
         s.textExp = tk.StringVar(); s.textExp.set("Experimental_data.dat")
         s.textStructure = tk.StringVar(); s.textStructure.set("3D_1NC_structure.txt")
         s.textOutput = tk.StringVar(); s.textOutput.set("outFile.dat")
@@ -81,8 +76,8 @@ class MAIN_FRAME(tk.Tk):
         s.Vforming = [20.0] # V
         s.Vreset = [-20.0]   # V
         s.Vset = [20.0]      # V
-        s.Khrs = [8.0e-16]  # u.a.
-        s.Klrs = [7.0e-27]  # u.a. * cm3
+        s.Khrs = [4.70e5]  # u.a.
+        s.Klrs = [19.3]  # u.a. * cm3
 
         s.gammaSET = [3.0]
         s.gammaRESET = [0.4]
@@ -380,17 +375,14 @@ class MAIN_FRAME(tk.Tk):
         s.WriteValsOutFile()
 
         s.InitSimulator(s.textOutput.get().encode(), drawSim)
-        s.SetContProc(0) 
+        s.SetContProc(0)
         s.Forming(0.0, s.Vforming[0], 0.1)
+
         s.SweepProcess(s.Vforming[0], 0.0, -0.1)
+        s.SetContProc(1)
         s.ResetProcess(0.0, s.Vreset[0], -0.1)
         s.SweepProcess(s.Vreset[0], 0.0, 0.1)
-        for n in range(1, int(s.cycles[0])+1):
-            s.SetContProc(n)  
-            s.SetProcess(0.0, s.Vset[0], 0.1)
-            s.SweepProcess(s.Vset[0], 0.0, -0.1)
-            s.ResetProcess(0.0, s.Vreset[0], -0.1)
-            s.SweepProcess(s.Vreset[0], 0.0, 0.1)
+
         s.FreeSimulatorMemory()
 
         print()
@@ -460,7 +452,7 @@ class MAIN_FRAME(tk.Tk):
         ppt.grid(True)
         ppt.xlabel("Voltage (V)")
         ppt.ylabel("Current (A)")
-        ppt.ylim(bottom=s.minIview)
+        ppt.ylim(bottom=minIview)
         if os.path.exists(s.textExp.get()): 
             print("Drawing the experimental data")
             ppt.semilogy(dfExp["V (V)"], dfExp["I (A)"], "-") # "-": points joined by lines.
