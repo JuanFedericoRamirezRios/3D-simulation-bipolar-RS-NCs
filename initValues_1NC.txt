@@ -15,8 +15,8 @@ Nfresh: -56.0
 Vforming (V): 2
 Vreset (V): -2
 Vset (V): 2
-Khrs (a.u.): 8e-16
-Klrs (a.u. cm3): 7e-27
+Khrs (a.u.): 4.70e5
+Klrs (a.u. cm3): 19.3
 
 gammaSET for generation probb.: 3.0
 gammaRESET for generation probb.: 0.4
@@ -38,8 +38,6 @@ Rth thermal resistance (K/W): 8.0e6
 Ao atten. electron wave (cm): 3.3e-08
 
 Num cycles: 1
-Nc (/cm3): 2.94e+18
-u (cm2/(V s)): 200
 perm Relative dielect. const.: 8.5
 phi_t (Eg - trapVo) into Eg (V): 0.1
 

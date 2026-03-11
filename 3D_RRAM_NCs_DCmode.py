@@ -76,8 +76,8 @@ class MAIN_FRAME(tk.Tk):
         s.Vforming = [20.0] # V
         s.Vreset = [-20.0]   # V
         s.Vset = [20.0]      # V
-        s.Khrs = [4.70e5]  # u.a.
-        s.Klrs = [19.3]  # u.a. * cm3
+        s.KlrsVneg = [19.3]  # A-cm/V2
+        s.KlrsVpos = [19.3]  # A-cm/V2
 
         s.gammaSET = [3.0]
         s.gammaRESET = [0.4]
@@ -85,22 +85,24 @@ class MAIN_FRAME(tk.Tk):
         s.complIforming = [0.01] # Amp
         s.complIreset = [0.01]   # Amp
         s.complIset = [0.01]   # Amp
-        s.a = [0.325E-7]           # cm
-        s.A = [10.0E-3]            # cm2
+        s.KhrsVneg = [4.70e5]  # A/V-cm
+        s.KhrsVpos = [4.70e5]  # A/V-cm
 
         s.numVoIni = [0]
         s.stepTime0 = [5.0E-6] # sec
         s.EoeMatrix = [1.0]          # eV
-        s.EoeInter = [4.5]
         s.Eom = [1.0]          # eV
         s.Lo = [5.4]           # const. lattice a: [Lo] = a.
         s.beta0 = [6.0E6]
         s.Rth = [8.0e6]  # K/W
         s.Ao = [0.33E-7] # cm
 
+        s.a = [0.325E-7]           # cm
+        s.A = [10.0E-3]            # cm2
+        s.EoeInter = [4.5]          # eV
         s.cycles = [1]
-        s.Nc = [2.94E18] # 1/cm3  For ZnO: 2.94e18 <- Park 2020: Electrical Defect State Distribution in Single Crystal ZnO Schottky Barrier Diodes
-        s.u = [200.0]   # cm2/(V sec)
+        # s.Nc = [2.94E18] # 1/cm3  For ZnO: 2.94e18 <- Park 2020: Electrical Defect State Distribution in Single Crystal ZnO Schottky Barrier Diodes
+        # s.u = [200.0]   # cm2/(V sec)
         s.epsilon = [8.5]
         s.phit = [0.1] # V
         # self.Easclc = [0.1] # eV . Ea = phit.
@@ -130,8 +132,8 @@ class MAIN_FRAME(tk.Tk):
             s.Vforming[0] = float(p[7])
             s.Vreset[0] = float(p[8])
             s.Vset[0] = float(p[9])
-            s.Khrs[0] = float(p[10])
-            s.Klrs[0] = float(p[11])
+            s.KlrsVneg[0] = float(p[10])
+            s.KlrsVpos[0] = float(p[11])
 
             s.gammaSET[0] = float(p[12])
             s.gammaRESET[0] = float(p[13])
@@ -139,22 +141,24 @@ class MAIN_FRAME(tk.Tk):
             s.complIforming[0] = float(p[15])
             s.complIreset[0] = float(p[16])
             s.complIset[0] = float(p[17])
-            s.a[0] = float(p[18])
-            s.A[0] = float(p[19])
+            s.KhrsVneg[0] = float(p[18])
+            s.KhrsVpos[0] = float(p[19])
 
             s.numVoIni[0] = int(p[20])
             s.stepTime0[0] = float(p[21])
             s.EoeMatrix[0] = float(p[22])
-            s.EoeInter[0] = float(p[23])
-            s.Eom[0] = float(p[24])
-            s.Lo[0] = float(p[25])
-            s.beta0[0] = float(p[26])
-            s.Rth[0] = float(p[27])
-            s.Ao[0] = float(p[28])
+            s.Eom[0] = float(p[23])
+            s.Lo[0] = float(p[24])
+            s.beta0[0] = float(p[25])
+            s.Rth[0] = float(p[26])
+            s.Ao[0] = float(p[27])
 
-            s.cycles[0] = int(p[29])
-            s.Nc[0] = float(p[30])
-            s.u[0] = float(p[31])
+            s.a[0] = float(p[28])
+            s.A[0] = float(p[29])
+            s.EoeInter[0] = float(p[30])
+            s.cycles[0] = int(p[31])
+            # s.Nc[0] = float(p[30])
+            # s.u[0] = float(p[31])
             s.epsilon[0] = float(p[32])
             s.phit[0] = float(p[33])
             
@@ -174,8 +178,8 @@ class MAIN_FRAME(tk.Tk):
             "Vforming =", s.Vforming[0], "\n",
             "Vreset =", s.Vreset[0], "\n",
             "Vset =", s.Vset[0], "\n",
-            "Khrs =", s.Khrs[0], "\n",
-            "Klrs =", s.Klrs[0], "\n",
+            "Klrs at Vnegative =", s.KlrsVneg[0], "\n",
+            "Klrs at Vpositive =", s.KlrsVpos[0], "\n",
 
             "gammaSET =", s.gammaSET[0], "\n",
             "gammaRESET =", s.gammaRESET[0], "\n",
@@ -183,22 +187,24 @@ class MAIN_FRAME(tk.Tk):
             "complIforming =", s.complIforming[0], "\n",
             "complIreset =", s.complIreset[0], "\n",
             "complIset =", s.complIset[0], "\n",
-            "a =", s.a[0], "\n",
-            "A =", s.A[0], "\n",
+            "Khrs at Vnegative =", s.KhrsVneg[0], "\n",
+            "Khrs at Vpositive =", s.KhrsVpos[0], "\n",
 
             "numVoIni =", s.numVoIni[0], "\n",
             "stepTime0 =", s.stepTime0[0], "\n",
             "EoeMatrix =", s.EoeMatrix[0], "\n",
-            "EoeInter =", s.EoeInter[0], "\n",
             "Eom =", s.Eom[0], "\n",
             "Lo =", s.Lo[0], "\n",
             "beta0 =", s.beta0[0], "\n",
             "Rth =", s.Rth[0], "\n",
             "Ao =", s.Ao[0], "\n",
 
+            "a =", s.a[0], "\n",
+            "A =", s.A[0], "\n",
+            "EoeInter =", s.EoeInter[0], "\n",
             "cycles =", s.cycles[0], "\n",
-            "Nc =", s.Nc[0], "\n",
-            "u =", s.u[0], "\n",
+            # "Nc =", s.Nc[0], "\n",
+            # "u =", s.u[0], "\n",
             "epsilon =", s.epsilon[0], "\n",
             "phit =", s.phit[0], "\n"
         )
@@ -227,11 +233,11 @@ class MAIN_FRAME(tk.Tk):
         VsetControls = NC.CONTROLS_VALUE(master = s, name = "Vset", units = "V", value = s.Vset)
         VsetControls.grid(column = 5, row = 0, sticky = "nsew")
 
-        KhrsControls = NC.CONTROLS_SCIENTIFIC(master = s, name = "K_HRS", units = "au", value = s.Khrs)
-        KhrsControls.grid(column = 6, row = 0, sticky = "nsew")
+        KlrsNegControls = NC.CONTROLS_SCIENTIFIC(master = s, name = "K_LRS-", units = "A-cm/V2", value = s.KlrsVneg)
+        KlrsNegControls.grid(column = 6, row = 0, sticky = "nsew")
 
-        KlrsControls = NC.CONTROLS_SCIENTIFIC(master = s, name = "K_LRS", units = "au-cm3", value = s.Klrs)
-        KlrsControls.grid(column = 7, row = 0, sticky = "nsew")
+        KlrsPosControls = NC.CONTROLS_SCIENTIFIC(master = s, name = "K_LRS+", units = "A-cm/V2", value = s.KlrsVpos)
+        KlrsPosControls.grid(column = 7, row = 0, sticky = "nsew")
 
         ########################
 
@@ -256,11 +262,11 @@ class MAIN_FRAME(tk.Tk):
         complIsetControls = NC.CONTROLS_SCIENTIFIC(master = s, name = "IcomplSet", units = "A", value = s.complIset)
         complIsetControls.grid(column = 5, row = 1, sticky = "nsew")
 
-        aControls = NC.CONTROLS_VALUE(master = s, name = "a", units = "cm", value = s.a)
-        aControls.grid(column = 6, row = 1, sticky = "nsew")
+        KhrsNegControls = NC.CONTROLS_SCIENTIFIC(master = s, name = "K_HRS-", units = "A/V-cm", value = s.KhrsVneg)
+        KhrsNegControls.grid(column = 6, row = 1, sticky = "nsew")
 
-        Acontrols = NC.CONTROLS_SCIENTIFIC(master = s, name = "A", units = "cm2", value = s.A)
-        Acontrols.grid(column = 7, row = 1, sticky = "nsew")
+        KhrsPosControls = NC.CONTROLS_SCIENTIFIC(master = s, name = "K_HRS+", units = "A/V-cm", value = s.KhrsVpos)
+        KhrsPosControls.grid(column = 7, row = 1, sticky = "nsew")
 
         ########################
 
@@ -296,19 +302,25 @@ class MAIN_FRAME(tk.Tk):
         # hframe4 = tk.Frame(s)
         # hframe4.pack(fill = "both", expand = True)
 
+        aControls = NC.CONTROLS_VALUE(master = s, name = "a", units = "cm", value = s.a)
+        aControls.grid(column = 0, row = 3, sticky = "nsew")
+
+        Acontrols = NC.CONTROLS_SCIENTIFIC(master = s, name = "A", units = "cm2", value = s.A)
+        Acontrols.grid(column = 1, row = 3, sticky = "nsew")
+
         cyclesControls = NC.CONTROLS_VALUE(master = s, name = "cycles", units = "", value = s.cycles)
-        cyclesControls.grid(column = 0, row = 3, sticky = "nsew")
+        cyclesControls.grid(column = 2, row = 3, sticky = "nsew")
 
-        NcControls = NC.CONTROLS_SCIENTIFIC(master = s, name = "Nc", units = "/cm3", value = s.Nc)
-        NcControls.grid(column = 1, row = 3, sticky = "nsew")
+        # NcControls = NC.CONTROLS_SCIENTIFIC(master = s, name = "Nc", units = "/cm3", value = s.Nc)
+        # NcControls.grid(column = 1, row = 3, sticky = "nsew")
 
-        uControls = NC.CONTROLS_VALUE(master = s, name = "u", units = "cm2/V-s", value = s.u)
-        uControls.grid(column = 2, row = 3, sticky = "nsew")
+        # uControls = NC.CONTROLS_VALUE(master = s, name = "u", units = "cm2/V-s", value = s.u)
+        # uControls.grid(column = 2, row = 3, sticky = "nsew")
 
         epsilonControls = NC.CONTROLS_VALUE(master = s, name = "perm", units = "", value = s.epsilon)
         epsilonControls.grid(column = 3, row = 3, sticky = "nsew")
 
-        phitControls = NC.CONTROLS_VALUE(master = s, name = "phit", units = "´V", value = s.phit)
+        phitControls = NC.CONTROLS_VALUE(master = s, name = "phit", units = "V", value = s.phit)
         phitControls.grid(column = 4, row = 3, sticky = "nsew")
 
         vFrame1 = tk.Frame(s)
@@ -400,40 +412,47 @@ class MAIN_FRAME(tk.Tk):
         s.outFile.write("Structure layers: " + s.textStructure.get() + "\n")
         s.outFile.write("Seed of random number generator: " + str(s.seed[0]) + "\n")
         s.outFile.write("\n")
+
         s.outFile.write("N_LRS: " + str(s.N_LRS[0]) + "\n")
         s.outFile.write("N_HRS: " + str(s.N_HRS[0]) + "\n")
         s.outFile.write("Nfresh: " + str(s.Nfresh[0]) + "\n")
         s.outFile.write("Vforming: " + str(s.Vforming[0]) + " V\n")
         s.outFile.write("Vreset: " + str(s.Vreset[0]) + " V\n")
         s.outFile.write("Vset: " + str(s.Vset[0]) + " V\n")
-        s.outFile.write("Khrs: " + str(s.Khrs[0]) + " a.u.\n")
-        s.outFile.write("Klrs: " + str(s.Klrs[0]) + " a.u. cm3\n")
+        s.outFile.write("Klrs at Vnegative: " + str(s.KlrsVneg[0]) + " A-cm/V2\n")
+        s.outFile.write("Klrs at Vpositive: " + str(s.KlrsVpos[0]) + " A-cm/V2\n")
         s.outFile.write("\n")
+
         s.outFile.write("gammaSET for generation probb.: " + str(s.gammaSET[0]) + "\n")
         s.outFile.write("gammaRESET for generation probb.: " + str(s.gammaRESET[0]) + "\n")
         s.outFile.write("phiDrift oxygen migrat: " + str(s.phiDrift[0]) + "\n")
         s.outFile.write("I compliance FORMING: " + str(s.complIforming[0]) + " A\n")
         s.outFile.write("I compliance RESET: " + str(s.complIreset[0]) + " A\n")
         s.outFile.write("I compliance SET: " + str(s.complIset[0]) + " A\n")
-        s.outFile.write("a const. lattice: " + str(s.a[0]) + " cm\n")
-        s.outFile.write("A Area device: " + str(s.A[0]) + " cm2\n")
+        s.outFile.write("Khrs at Vnegative: " + str(s.KhrsVneg[0]) + " A/V-cm\n")
+        s.outFile.write("Khrs at Vpositive: " + str(s.KhrsVpos[0]) + " A/V-cm\n")
         s.outFile.write("\n")
+
         s.outFile.write("Vo_ini Num initial Vos: " + str(s.numVoIni[0]) + "\n")
         s.outFile.write("t_0 gener-recomb: " + str(s.stepTime0[0]) + " s\n")
         s.outFile.write("E_Oe oxygen equilib. in ox. matrix: "  + str(s.EoeMatrix[0]) + " eV\n")
-        s.outFile.write("E_Oe oxygen equilib. in NCs/Ox.: "  + str(s.EoeInter[0]) + " eV\n")
         s.outFile.write("E_Om oxygen migrat.: "  + str(s.Eom[0]) + " eV\n")
         s.outFile.write("L_O decaying oxig. ion: "  + str(s.Lo[0]) + " a\n")
         s.outFile.write("beta0 recomb. factor: " + str(s.beta0[0]) + "\n")
         s.outFile.write("Rth thermal resistance: " + str(s.Rth[0]) + " K/W\n")
         s.outFile.write("Ao atten. electron wave: " + str(s.Ao[0]) + " cm\n")
         s.outFile.write("\n")
+
+        s.outFile.write("a const. lattice: " + str(s.a[0]) + " cm\n")
+        s.outFile.write("A Area device: " + str(s.A[0]) + " cm2\n")
+        s.outFile.write("E_Oe oxygen equilib. in NCs/Ox.: "  + str(s.EoeInter[0]) + " eV\n")
         s.outFile.write("Num cycles: " + str(s.cycles[0]) + "\n")
-        s.outFile.write("Nc: " + str(s.Nc[0]) + " /cm3\n")
-        s.outFile.write("u: " + str(s.u[0]) + " cm2/(V s)\n")
+        # s.outFile.write("Nc: " + str(s.Nc[0]) + " /cm3\n")
+        # s.outFile.write("u: " + str(s.u[0]) + " cm2/(V s)\n")
         s.outFile.write("perm Relative dielect. const.: " + str(s.epsilon[0]) + "\n")
         s.outFile.write("phi_t (Eg - trapVo) into Eg: " + str(s.phit[0]) + " V\n")
         s.outFile.write("\n")
+
         s.outFile.close()
 
     def SimulateDraw(s):
