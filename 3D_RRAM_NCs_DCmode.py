@@ -33,7 +33,7 @@ class MAIN_FRAME(tk.Tk):
 
         s.SetDefaultVals()
 
-        s.ReadInitValues(valuesInitPath, 34)
+        s.ReadInitValues(valuesInitPath, 35)
 
         # s.PrintValues()
         s.CreateGUI()
@@ -104,7 +104,8 @@ class MAIN_FRAME(tk.Tk):
         # s.Nc = [2.94E18] # 1/cm3  For ZnO: 2.94e18 <- Park 2020: Electrical Defect State Distribution in Single Crystal ZnO Schottky Barrier Diodes
         # s.u = [200.0]   # cm2/(V sec)
         s.epsilon = [8.5]
-        s.phit = [0.1] # V
+        s.phiLRS = [0.1] # V
+        s.phiHRS = [0.1] # V
         # self.Easclc = [0.1] # eV . Ea = phit.
 
     def ReadInitValues(s, filePath, numParams) -> None:
@@ -160,7 +161,8 @@ class MAIN_FRAME(tk.Tk):
             # s.Nc[0] = float(p[30])
             # s.u[0] = float(p[31])
             s.epsilon[0] = float(p[32])
-            s.phit[0] = float(p[33])
+            s.phiLRS[0] = float(p[33])
+            s.phiHRS[0] = float(p[34])
             
         except ValueError as e:
             print("Error:", e)
@@ -206,7 +208,8 @@ class MAIN_FRAME(tk.Tk):
             # "Nc =", s.Nc[0], "\n",
             # "u =", s.u[0], "\n",
             "epsilon =", s.epsilon[0], "\n",
-            "phit =", s.phit[0], "\n"
+            "phi_LRS =", s.phiLRS[0], "\n",
+            "phi_HRS =", s.phiHRS[0], "\n"
         )
 
     def CreateGUI(s):
@@ -279,8 +282,8 @@ class MAIN_FRAME(tk.Tk):
         stepTime0Controls = NC.CONTROLS_SCIENTIFIC(master = s, name = "t_ini", units = "s", value = s.stepTime0)
         stepTime0Controls.grid(column = 1, row = 2, sticky = "nsew")
 
-        EoeControls = NC.CONTROLS_VALUE(master = s, name = "E_OeM", units = "eV", value = s.EoeMatrix)
-        EoeControls.grid(column = 2, row = 2, sticky = "nsew")
+        EoeMControls = NC.CONTROLS_VALUE(master = s, name = "E_OeM", units = "eV", value = s.EoeMatrix)
+        EoeMControls.grid(column = 2, row = 2, sticky = "nsew")
 
         EomControls = NC.CONTROLS_VALUE(master = s, name = "E_Om", units = "eV", value = s.Eom)
         EomControls.grid(column = 3, row = 2, sticky = "nsew")
@@ -308,8 +311,11 @@ class MAIN_FRAME(tk.Tk):
         Acontrols = NC.CONTROLS_SCIENTIFIC(master = s, name = "A", units = "cm2", value = s.A)
         Acontrols.grid(column = 1, row = 3, sticky = "nsew")
 
+        EoeIControls = NC.CONTROLS_VALUE(master = s, name = "E_OeI", units = "eV", value = s.EoeInter)
+        EoeIControls.grid(column = 2, row = 3, sticky = "nsew")
+
         cyclesControls = NC.CONTROLS_VALUE(master = s, name = "cycles", units = "", value = s.cycles)
-        cyclesControls.grid(column = 2, row = 3, sticky = "nsew")
+        cyclesControls.grid(column = 3, row = 3, sticky = "nsew")
 
         # NcControls = NC.CONTROLS_SCIENTIFIC(master = s, name = "Nc", units = "/cm3", value = s.Nc)
         # NcControls.grid(column = 1, row = 3, sticky = "nsew")
@@ -318,10 +324,16 @@ class MAIN_FRAME(tk.Tk):
         # uControls.grid(column = 2, row = 3, sticky = "nsew")
 
         epsilonControls = NC.CONTROLS_VALUE(master = s, name = "perm", units = "", value = s.epsilon)
-        epsilonControls.grid(column = 3, row = 3, sticky = "nsew")
+        epsilonControls.grid(column = 4, row = 3, sticky = "nsew")
 
-        phitControls = NC.CONTROLS_VALUE(master = s, name = "phit", units = "V", value = s.phit)
-        phitControls.grid(column = 4, row = 3, sticky = "nsew")
+        hFrame1 = tk.Frame(s)
+        hFrame1.grid(column = 5, row = 3, sticky = "nsew")
+
+        phiLRSControls = NC.CONTROLS_VALUE(master = hFrame1, name = "phi_LRS", units = "V", value = s.phiLRS)
+        phiLRSControls.pack(side = "left", fill = "x", expand = True)
+
+        phiHRSControls = NC.CONTROLS_VALUE(master = hFrame1, name = "phi_HRS", units = "V", value = s.phiHRS)
+        phiHRSControls.pack(side = "left", fill = "x", expand = True)
 
         vFrame1 = tk.Frame(s)
         vFrame1.grid(column = 6, row = 3, sticky = "nsew")
@@ -450,7 +462,8 @@ class MAIN_FRAME(tk.Tk):
         # s.outFile.write("Nc: " + str(s.Nc[0]) + " /cm3\n")
         # s.outFile.write("u: " + str(s.u[0]) + " cm2/(V s)\n")
         s.outFile.write("perm Relative dielect. const.: " + str(s.epsilon[0]) + "\n")
-        s.outFile.write("phi_t (Eg - trapVo) into Eg: " + str(s.phit[0]) + " V\n")
+        s.outFile.write("phi_LRS (Eg - trapVo) into Eg: " + str(s.phiLRS[0]) + " V\n")
+        s.outFile.write("phi_HRS (Eg - trapVo) into Eg: " + str(s.phiHRS[0]) + " V\n")
         s.outFile.write("\n")
 
         s.outFile.close()
@@ -496,8 +509,6 @@ class MAIN_FRAME(tk.Tk):
             return
         return pd.read_csv(s.textOutput.get(), sep = "\t", usecols= ["V (V)", "Ns (a.u.)", "I (A)"], skiprows=lineHead) # If the data start after of headers, It is could use parameter header=.
         # print("Data number = " + str(len(dfSim)))
-    
-    
     
     def CloseProgram(s):
         ppt.close("I Vs V")
