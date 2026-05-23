@@ -9,6 +9,10 @@
 
  * GPL-3.0 license
 """
+calcNsLimits = False
+useNearVosFeq = False
+useNearVosNs = False
+
 valuesInitPath = "initValues.txt"
 minIview = 1e-18 # Amp
 
@@ -42,8 +46,9 @@ class MAIN_FRAME(tk.Tk):
         path = os.path.dirname(os.path.realpath(__file__))
         handle = ctypes.CDLL(path + "/CalcsCpp.dll", winmode=0) # winmode=0: Use unicode.
 
+        # SIMULA(string resultsFile, bool drawSim, bool calcNsLimits, bool useNearVosFeq, bool useNearVosNs)
         s.InitSimulator = handle.InitSimulator
-        s.InitSimulator.argtypes = [ctypes.c_char_p, ctypes.c_bool] # c_char_p: c_char pointer
+        s.InitSimulator.argtypes = [ctypes.c_char_p, ctypes.c_bool, ctypes.c_bool, ctypes.c_bool, ctypes.c_bool] # c_char_p: c_char pointer
 
         s.SetContProc = handle.SetContProc
         s.SetContProc.argtypes = [ctypes.c_int]
@@ -398,14 +403,25 @@ class MAIN_FRAME(tk.Tk):
 
         s.WriteValsOutFile()
 
-        s.InitSimulator(s.textOutput.get().encode(), drawSim)
+
+        # SIMULA(string resultsFile, bool drawSim, bool calcNsLimits, bool useNearVosFeq, bool useNearVosNs)
+        s.InitSimulator(s.textOutput.get().encode(), drawSim, calcNsLimits, useNearVosFeq, useNearVosNs)
         s.SetContProc(0)
         s.Forming(0.0, s.Vforming[0], 0.1)
-
         s.SweepProcess(s.Vforming[0], 0.0, -0.1)
+
         s.SetContProc(1)
         s.ResetProcess(0.0, s.Vreset[0], -0.1)
         s.SweepProcess(s.Vreset[0], 0.0, 0.1)
+
+        # s.ResetProcess(0.0, s.Vreset[0], -0.1)
+        # s.SweepProcess(s.Vreset[0], 0.0, 0.1)
+        # for n in range(1, int(s.cycles[0]+1)):
+        #     s.SetContProc(n)
+        #     s.SetProcess(0.0, s.Vset[0], 0.1)
+        #     s.SweepProcess(s.Vset[0], 0.0, -0.1)
+        #     s.ResetProcess(0.0, s.Vreset[0], -0.1)
+        #     s.SweepProcess(s.Vreset[0], 0.0, 0.1)
 
         s.FreeSimulatorMemory()
 
