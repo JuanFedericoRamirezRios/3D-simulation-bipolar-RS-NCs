@@ -10,8 +10,8 @@
  * GPL-3.0 license
 """
 calcNsLimits = False
-useNearVosFeq = False
-useNearVosNs = False
+useNearVosFeq = True
+useNearVosNs = True
 
 valuesInitPath = "initValues.txt"
 minIview = 1e-18 # Amp
