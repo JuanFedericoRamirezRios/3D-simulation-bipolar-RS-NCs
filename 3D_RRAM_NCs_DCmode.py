@@ -9,7 +9,7 @@
 
  * GPL-3.0 license
 """
-calcNsLimits = False
+calcNsLimits = True
 useNearVosFeq = True
 useNearVosNs = True
 
@@ -223,14 +223,16 @@ class MAIN_FRAME(tk.Tk):
         for n in range(4):
             s.rowconfigure(n, weight = 1)
 
-        N_LRSControls = NC.CONTROLS_VALUE(master = s, name = "N_LRS", units = "au", value = s.N_LRS)
-        N_LRSControls.grid(column = 0, row = 0, sticky = "nsew") # nsew: north, south, east y west.
-
-        N_HRSControls = NC.CONTROLS_VALUE(master = s, name = "N_HRS", units = "au", value = s.N_HRS)
-        N_HRSControls.grid(column = 1, row = 0, sticky = "nsew")
-
-        NfreshControls = NC.CONTROLS_VALUE(master = s, name = "Nfresh", units = "au", value = s.Nfresh)
-        NfreshControls.grid(column = 2, row = 0, sticky = "nsew")
+        if(not calcNsLimits):
+            N_LRSControls = NC.CONTROLS_VALUE(master = s, name = "N_LRS", units = "au", value = s.N_LRS)
+            N_LRSControls.grid(column = 0, row = 0, sticky = "nsew") # nsew: north, south, east y west.
+            
+            N_HRSControls = NC.CONTROLS_VALUE(master = s, name = "N_HRS", units = "au", value = s.N_HRS)
+            N_HRSControls.grid(column = 1, row = 0, sticky = "nsew")
+            
+            NfreshControls = NC.CONTROLS_VALUE(master = s, name = "Nfresh", units = "au", value = s.Nfresh)
+            NfreshControls.grid(column = 2, row = 0, sticky = "nsew")
+        
 
         VformingControls = NC.CONTROLS_VALUE(master = s, name = "Vforming", units = "V", value = s.Vforming)
         VformingControls.grid(column = 3, row = 0, sticky = "nsew")
